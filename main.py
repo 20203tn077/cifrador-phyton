@@ -9,12 +9,13 @@ from input_utils import *
 encryption_key = generateKey()
 want_exit = False
 
+# Menú principal
+# Se sigue mostrando hasta que se elija la opción de salir
 while not want_exit:
-    print('\n==============================')
-    print('SISTEMA DE CIFRADO DE MENSAJES')
-    print('==============================')
-    print('Llave de cifrado:\n[' + encryption_key + ']')
-    
+    print('\n====================================')
+    print('>> SISTEMA DE CIFRADO DE MENSAJES <<')
+    print('====================================')
+    print('Llave de cifrado: [' + encryption_key.replace('\n', '')[:13] + '...]')
     print('\nOpciones:')
     print('1.- Cifrar mensaje')
     print('2.- Descifrar mensaje')
@@ -22,108 +23,100 @@ while not want_exit:
     print('4.- Importar llave de cifrado')
     print('5.- Exportar llave de cifrado')
     print('6.- Salir')
-    
     option = select_option('\nSelecciona una opción:', range(1, 7))
     if option == 1:
+        # Submenú opción de cifrar mensaje
         print('\nCIFRAR MENSAJE')
         print('\nOpciones:')
         print('1.- Escribir')
         print('2.- Leer desde archivo')
         print('3.- Cancelar')
-        
         option = select_option('\nSelecciona una opción:', range(1, 4))
         if (option != 3):
             message = ''
+            # Se obtiene el mensaje de la fuente correspondiente a la opción seleccionada
             if option == 1:
                 message = input('\nIngresa el mensaje:\n')
             elif option == 2:
                 message = get_message(input('\nIngresa el nombre del archivo:\n'))
+            # Se evalúa en caso de no exista o no se haya podido obtener el mensaje
             if message:
+                # Cifrado del mensaje
                 encrypted_message = encrypt(message, encryption_key)
-            
-                print('\nEl mensaje cifrado es:')
-                print(encrypted_message)
-                print('------------------------------')
+                print('\nEl mensaje cifrado es:\n' + encrypted_message + '\n------------------------------------')
                 if confirm_option('\n¿Deseas guardar el resultado?'):
+                    # Guardado del resultado en archivo de texto
                     filename = input('\nIngresa el nombre del archivo a guardar\n')
                     if (save_message(filename, encrypted_message)):
-                        print('\n-- Mensaje guardado en archivo ' + filename + '.txt --')
-                        wait()
+                        alert('Mensaje guardado en archivo ' + filename + '.txt')
                     else:
-                        print('\n[!] No se pudo guardar el archivo [!]')
-                        wait()
+                        warning('No se pudo guardar el archivo')
             else:
-                print('\n[!] No se pudo obtener el mensaje [!]')
-                wait()
+                warning('No se pudo obtener el mensaje')
         else:
-            print('\n-- Acción cancelada --')
-            wait()
+            alert('Acción cancelada')
     elif option == 2:
+        # Submenú opción de descifrar mensaje
         print('\nDESCIFRAR MENSAJE')
         print('\nOpciones:')
         print('1.- Escribir')
         print('2.- Leer desde archivo')
         print('3.- Cancelar')
-        
         option = select_option('\nSelecciona una opción:', range(1, 4))
         if (option != 3):
             message = ''
+            # Se obtiene el mensaje de la fuente correspondiente a la opción seleccionada
             if option == 1:
                 message = input('\nIngresa el mensaje:\n')
             elif option == 2:
                 message = get_message(input('\nIngresa el nombre del archivo:\n'))
+            # Se evalúa en caso de no exista o no se haya podido obtener el mensaje
             if message:
+                # Descifrado del mensaje
                 decrypted_message = decrypt(message, encryption_key)
-            
                 print('\nEl mensaje descifrado es:')
                 print(decrypted_message)
                 print('------------------------------')
                 if confirm_option('\n¿Deseas guardar el resultado?'):
+                    # Guardado del resultado en archivo de texto
                     filename = input('\nIngresa el nombre del archivo a guardar\n')
                     if (save_message(filename, decrypted_message)):
-                        print('\n-- Mensaje guardado en archivo ' + filename + '.txt --')
-                        wait()
+                        alert('Mensaje guardado en archivo ' + filename + '.txt')
                     else:
-                        print('\n[!] No se pudo guardar el archivo [!]')
-                        wait()
+                        warning('No se pudo guardar el archivo')
             else:
-                print('\n[!] No se pudo obtener el mensaje [!]')
-                wait()
+                warning('No se pudo obtener el mensaje')
         else:
-            print('\n-- Acción cancelada --')
-            wait()
+            alert('Acción cancelada')
     elif option == 3:
         print('\nGENERAR LLAVE DE CIFRADO')
         if (confirm_option('\n¿Deseas generar una nueva llave de cifrado?, esta reemplazará a la llave actual')):
+            # Generación de nueva llave de cifrado
             encryption_key = generateKey()
-            print('\n-- Llave de cifrado generada --')
-            wait()
+            alert('Llave de cifrado generada')
         else:
-            print('\n-- Acción cancelada --')
-            wait()
+            alert('Acción cancelada')
     elif option == 4:
         print('\nIMPORTAR LLAVE DE CIFRADO')
         if (confirm_option('\n¿Deseas importar una llave de cifrado?, esta reemplazará a la llave actual')):
+            # Importación de llave de cifrado desde archivo
+            # Se evalúa antes de reemplazar la clave en caso de que haya fallado la lectura del archivo
             key = get_encryption_key(input('\nIngresa el nombre del archivo:\n'))
             if key:
                 encryption_key = key
-                print('\n-- Llave de cifrado importada --')
-                wait()
+                alert('Llave de cifrado importada')
             else:
-                print('\n[!] No se pudo obtener la llave de cifrado [!]')
-                wait()
+                warning('No se pudo obtener la llave de cifrado')
         else:
-            print('\n-- Acción cancelada --')
-            wait()
+            alert('Acción cancelada')
     elif option == 5:
         print('\nEXPORTAR LLAVE DE CIFRADO')
+        # Guardado de llave de cifrado en archivo KEY
         filename = input('\nIngresa el nombre del archivo a guardar\n')
         if (save_encryption_key(filename, encryption_key)):
-            print('\n-- Llave de cifrado guardada en archivo ' + filename + '.key --')
-            wait()
+            alert('Llave de cifrado guardada en archivo ' + filename + '.key')
         else:
-            print('\n[!] No se pudo guardar el archivo [!]')
-            wait()
+            warning('No se pudo guardar el archivo')
         print()
     elif option == 6:
         print('\nSALIR')
@@ -131,5 +124,4 @@ while not want_exit:
             want_exit = True
             print('\nBye :)')
         else:
-            print('\n-- Acción cancelada --')
-            wait()
+            alert('Acción cancelada')

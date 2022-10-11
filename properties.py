@@ -2,8 +2,13 @@
 # Autor: Ricardo Cárdenas Guevara
 # Fecha de creación: 10/10/2022
 
+# Colección de alfabetos
+# Los caracteres admitidos, así como la complejidad de los mensajes, variará según el alfabeto elegido
+SIMPLE = '0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz'
+COMPLEX = '0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyzÁÉÍÓÚÜáéíóúü!"#$%&/()=?\'¿¡´¨+*-_,;.:[]<>|°¬\\}{ \n~^`'
+
 # Alfabeto base para cifrar/descifrar y generar las llaves de cifrado
-ALPHABET = '0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZabcdefghijklmnñopqrstuvwxyz'
+ALPHABET = SIMPLE
 # Directorio de llaves de cifrado
 KEYS_DIR = 'llaves'
 # Directorio de archivos de texto
