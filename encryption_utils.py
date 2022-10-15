@@ -3,6 +3,7 @@
 # Fecha de creación: 10/10/2022
 
 # Importación de biblioteca random para generar llaves de cifrado
+from operator import index
 import random
 # Importación de alfabeto base desde archivo de configuración
 from properties import ALPHABET
@@ -24,10 +25,8 @@ def generateKey():
 def encrypt(message, key):
     result = ''
     for char in message:
-        for i in range(len(ALPHABET)):
-            if char == ALPHABET[i]:
-                result += key[i]
-                break
+        if char in ALPHABET:
+            result += key[ALPHABET.index(char)]
         else:
             result += char
     return result
@@ -35,10 +34,8 @@ def encrypt(message, key):
 def decrypt(message, key):
     result = ''
     for char in message:
-        for i in range(len(ALPHABET)):
-            if char == key[i]:
-                result += ALPHABET[i]
-                break
+        if char in key:
+            result += ALPHABET[key.index(char)]
         else:
             result += char
     return result

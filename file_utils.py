@@ -16,7 +16,9 @@ from properties import KEYS_DIR, MESSAGES_DIR
 def get_message(name):
     try:
         file = open(os.path.join(MESSAGES_DIR, name + '.txt'), encoding='utf-8')
-        return file.read()
+        message = file.read()
+        file.close()
+        return message
     except:
         return
 
@@ -34,7 +36,8 @@ def save_message(name, message):
 def get_encryption_key(name):
     try:
         file = open(os.path.join(KEYS_DIR, name + '.key'), encoding='utf-8')
-        return file.read()
+        encryption_key = file.read()
+        return encryption_key
     except:
         return
 
